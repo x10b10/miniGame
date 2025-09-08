@@ -1,0 +1,72 @@
+[
+  {
+    "date": "2025-09-08T09:59:49.065956",
+    "score": 30,
+    "total": 30,
+    "percentage": 100.0,
+    "difficulty": "medium",
+    "category": "alle",
+    "hints_used": 0,
+    "time_taken": 661.4138381481171
+  },
+  {
+    "date": "2025-09-08T10:01:23.285010",
+    "score": 30,
+    "total": 30,
+    "percentage": 100.0,
+    "difficulty": "hard",
+    "category": "hardware",
+    "hints_used": 0,
+    "time_taken": 50.820587158203125
+  },
+  {
+    "date": "2025-09-08T10:43:15.085191",
+    "score": 30,
+    "total": 30,
+    "percentage": 100.0,
+    "difficulty": "hard",
+    "category": "alle",
+    "hints_used": 0,
+    "time_taken": 2416.8772666454315
+  },
+  {
+    "date": "2025-09-08T10:46:51.840229",
+    "score": 30,
+    "total": 30,
+    "percentage": 100.0,
+    "difficulty": "hard",
+    "category": "betriebssysteme",
+    "hints_used": 0,
+    "time_taken": 32.98931574821472
+  },
+  {
+    "date": "2025-09-08T10:54:29.982734",
+    "score": 2,
+    "total": 2,
+    "percentage": 100.0,
+    "difficulty": "medium",
+    "category": "betriebssysteme",
+    "hints_used": 0,
+    "time_taken": 8.782936811447144
+  },
+  {
+    "date": "2025-09-08T10:55:00.841902",
+    "score": 2,
+    "total": 2,
+    "percentage": 100.0,
+    "difficulty": "medium",
+    "category": "programmierung",
+    "hints_used": 0,
+    "time_taken": 17.58799433708191
+  },
+  {
+    "date": "2025-09-08T10:56:28.032619",
+    "score": 11,
+    "total": 11,
+    "percentage": 100.0,
+    "difficulty": "medium",
+    "category": "alle",
+    "hints_used": 0,
+    "time_taken": 68.13668441772461
+  }
+]

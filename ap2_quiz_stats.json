@@ -1,0 +1,76 @@
+{
+  "games": [
+    {
+      "date": "2025-09-08T11:04:17.640096",
+      "score": 2,
+      "total_questions": 2,
+      "percentage": 100.0,
+      "time_taken": 128.54712629318237,
+      "hints_used": 0,
+      "difficulty": "medium",
+      "category": "systemarchitektur"
+    },
+    {
+      "date": "2025-09-08T11:06:10.512104",
+      "score": 2,
+      "total_questions": 2,
+      "percentage": 100.0,
+      "time_taken": 103.61608958244324,
+      "hints_used": 0,
+      "difficulty": "medium",
+      "category": "softwareentwicklung"
+    },
+    {
+      "date": "2025-09-08T11:07:00.767164",
+      "score": 2,
+      "total_questions": 2,
+      "percentage": 100.0,
+      "time_taken": 38.06323599815369,
+      "hints_used": 0,
+      "difficulty": "medium",
+      "category": "netzwerksicherheit"
+    },
+    {
+      "date": "2025-09-08T11:08:27.504227",
+      "score": 2,
+      "total_questions": 2,
+      "percentage": 100.0,
+      "time_taken": 77.51640439033508,
+      "hints_used": 0,
+      "difficulty": "medium",
+      "category": "datenbanken"
+    },
+    {
+      "date": "2025-09-08T11:10:28.319344",
+      "score": 2,
+      "total_questions": 2,
+      "percentage": 100.0,
+      "time_taken": 110.05350637435913,
+      "hints_used": 0,
+      "difficulty": "medium",
+      "category": "projektmanagement"
+    },
+    {
+      "date": "2025-09-08T11:11:53.289678",
+      "score": 2,
+      "total_questions": 2,
+      "percentage": 100.0,
+      "time_taken": 73.5787353515625,
+      "hints_used": 0,
+      "difficulty": "medium",
+      "category": "qualitaetssicherung"
+    },
+    {
+      "date": "2025-09-08T11:14:01.743963",
+      "score": 12,
+      "total_questions": 12,
+      "percentage": 100.0,
+      "time_taken": 112.29089498519897,
+      "hints_used": 0,
+      "difficulty": "medium",
+      "category": "alle"
+    }
+  ],
+  "total_games": 7,
+  "best_score": 100.0
+}

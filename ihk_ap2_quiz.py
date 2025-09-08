@@ -20,15 +20,6 @@ class Colors:
 
 class IHKAP2Quiz:
     def __init__(self):
-        self.score = 0
-        self.total_questions = 0
-        self.wrong_answers = []
-        self.start_time = None
-        self.hints_used = 0
-        self.current_difficulty = "medium"
-        self.current_category = "alle"
-        self.stats_file = "ap2_quiz_stats.json"
-        
         self.questions = {
             "systemarchitektur": {
                 "easy": [
@@ -655,6 +646,17 @@ class IHKAP2Quiz:
                 ]
             }
         }
+        
+        self.current_category = "alle"
+        self.current_difficulty = "medium"
+        self.score = 0
+        self.total_questions = 0
+        self.wrong_answers = []
+        self.stats_file = "ap2_quiz_stats.json"
+        self.stats = self.load_stats()
+        self.used_questions = set()
+        self.start_time = None
+        self.hints_used = 0
 
     def clear_screen(self):
         os.system('clear' if os.name == 'posix' else 'cls')
@@ -763,28 +765,31 @@ class IHKAP2Quiz:
                 self.print_colored("❌ Ungültige Eingabe! Bitte 1-7 wählen.", Colors.RED)
 
     def get_questions_for_quiz(self) -> List[Dict]:
-        """Get exactly 30 questions based on selected category and difficulty"""
-        questions = []
+        """Get unique questions based on selected category and difficulty"""
+        available_questions = []
         
         if self.current_category == "alle":
             # Mix questions from all categories
             for category in self.questions:
                 if self.current_difficulty in self.questions[category]:
-                    questions.extend(self.questions[category][self.current_difficulty])
+                    available_questions.extend(self.questions[category][self.current_difficulty])
         else:
             # Get questions from specific category
             if self.current_difficulty in self.questions[self.current_category]:
-                questions.extend(self.questions[self.current_category][self.current_difficulty])
+                available_questions.extend(self.questions[self.current_category][self.current_difficulty])
         
-        random.shuffle(questions)
+        # Create unique IDs for questions and filter out used ones
+        unique_questions = []
+        for question in available_questions:
+            question_id = f"{question['question'][:50]}_{question['options'][0][:20]}"
+            if question_id not in self.used_questions:
+                unique_questions.append(question)
+                self.used_questions.add(question_id)
         
-        if len(questions) >= 30:
-            return questions[:30]
-        else:
-            # If not enough questions, repeat some to reach 30
-            while len(questions) < 30:
-                questions.extend(questions[:min(30-len(questions), len(questions))])
-            return questions[:30]
+        random.shuffle(unique_questions)
+        
+        # Return available unique questions (up to 30)
+        return unique_questions[:min(30, len(unique_questions))]
 
     def ask_question(self, question_data: Dict, question_num: int, total_questions: int) -> bool:
         """Ask a single question and return True if answered correctly"""
@@ -967,6 +972,8 @@ class IHKAP2Quiz:
 
     def play(self) -> bool:
         """Main game loop"""
+        self.used_questions.clear()
+        
         self.display_welcome()
         
         # Show stats option
@@ -984,6 +991,8 @@ class IHKAP2Quiz:
         if not questions:
             self.print_colored("❌ Keine Fragen für diese Kombination verfügbar!", Colors.RED)
             return True
+        
+        self.print_colored(f"Verfügbare Fragen: {len(questions)}", Colors.GREEN)
         
         self.total_questions = len(questions)
         self.start_time = time.time()
@@ -1005,6 +1014,29 @@ class IHKAP2Quiz:
                 self.show_wrong_answers_review()
         
         return True
+
+    def load_questions(self):
+        """Load questions from a JSON file"""
+        try:
+            with open("ap2_quiz_fragen.json", 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except FileNotFoundError:
+            self.print_colored("Fehler: 'ap2_quiz_fragen.json' nicht gefunden.", Colors.RED)
+            return {}
+        except json.JSONDecodeError:
+            self.print_colored("Fehler: Fehler beim Decodieren von 'ap2_quiz_fragen.json'.", Colors.RED)
+            return {}
+
+    def load_stats(self):
+        """Load quiz statistics from a JSON file"""
+        try:
+            if os.path.exists(self.stats_file):
+                with open(self.stats_file, 'r', encoding='utf-8') as f:
+                    return json.load(f)
+            else:
+                return {"games": [], "total_games": 0, "best_score": 0}
+        except (FileNotFoundError, json.JSONDecodeError):
+            return {"games": [], "total_games": 0, "best_score": 0}
 
 def main():
     game = IHKAP2Quiz()

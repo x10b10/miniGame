@@ -28,6 +28,7 @@ class IHKAP1Quiz:
         self.current_difficulty = "medium"
         self.current_category = "alle"
         self.stats_file = "ap1_quiz_stats.json"
+        self.used_questions = set()
         
         self.questions = {
             "hardware": {
@@ -596,28 +597,35 @@ class IHKAP1Quiz:
                 self.print_colored("❌ Ungültige Eingabe! Bitte 1-3 wählen.", Colors.RED)
 
     def get_questions_for_quiz(self) -> List[Dict]:
-        """Get exactly 30 questions based on selected category and difficulty"""
-        questions = []
+        """Get up to 30 unique questions based on selected category and difficulty"""
+        available_questions = []
         
         if self.current_category == "alle":
             # Mix questions from all categories
             for category in self.questions:
                 if self.current_difficulty in self.questions[category]:
-                    questions.extend(self.questions[category][self.current_difficulty])
+                    for question in self.questions[category][self.current_difficulty]:
+                        question_id = f"{category}_{question['question'][:50]}"  # Create unique ID
+                        if question_id not in self.used_questions:
+                            available_questions.append((question, question_id))
         else:
             # Get questions from specific category
             if self.current_difficulty in self.questions[self.current_category]:
-                questions.extend(self.questions[self.current_category][self.current_difficulty])
+                for question in self.questions[self.current_category][self.current_difficulty]:
+                    question_id = f"{self.current_category}_{question['question'][:50]}"
+                    if question_id not in self.used_questions:
+                        available_questions.append((question, question_id))
         
-        random.shuffle(questions)
+        # Shuffle available questions
+        random.shuffle(available_questions)
         
-        if len(questions) >= 30:
-            return questions[:30]
-        else:
-            # If not enough questions, repeat some to reach 30
-            while len(questions) < 30:
-                questions.extend(questions[:min(30-len(questions), len(questions))])
-            return questions[:30]
+        # Select up to 30 questions and mark them as used
+        selected_questions = []
+        for question, question_id in available_questions[:30]:
+            selected_questions.append(question)
+            self.used_questions.add(question_id)
+        
+        return selected_questions
 
     def ask_question(self, question_data: Dict, question_num: int, total_questions: int) -> bool:
         """Ask a single question and return True if answered correctly"""
@@ -780,6 +788,9 @@ class IHKAP1Quiz:
             return True
         
         self.total_questions = len(questions)
+        self.print_colored(f"📝 {self.total_questions} einzigartige Fragen gefunden!", Colors.GREEN)
+        input("Drücke Enter um zu beginnen...")
+        
         self.start_time = time.time()
         
         # Ask all questions
@@ -807,7 +818,8 @@ def main():
         game.wrong_answers = []
         game.start_time = None
         game.hints_used = 0
-        
+        game.used_questions = set()
+
         # Play game
         if not game.play():
             break
